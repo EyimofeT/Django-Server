@@ -29,10 +29,10 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 import os
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
 
-import django_heroku
+# import django_heroku
 
 # Application definition
 
@@ -95,19 +95,27 @@ DATABASES = {
     #     'HOST': os.environ["PGHOST"],
     #     'PORT': os.environ["PGPORT"],
     # }
-     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dae9lg8p74pgde',
-        'USER': 'aiafbawqoxdkig',
-        'PASSWORD':'ce753b69d71e230001e339abe8a2d6d64a119256766de748805641c907353255',
-        'HOST': 'ec2-3-209-39-2.compute-1.amazonaws.com',
-        'PORT':'5432',
-    }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-       
+    #  'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'speedpay',
+    #     'USER': 'root',
+    #     'PASSWORD':'root',
+    #     'HOST': 'localhost',
+    #     'PORT':'8889',
     # }
+    #  'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'dae9lg8p74pgde',
+    #     'USER': 'aiafbawqoxdkig',
+    #     'PASSWORD':'ce753b69d71e230001e339abe8a2d6d64a119256766de748805641c907353255',
+    #     'HOST': 'ec2-3-209-39-2.compute-1.amazonaws.com',
+    #     'PORT':'5432',
+    # }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+       
+    }
 }
 
 AUTH_USER_MODEL = 'api.User'
@@ -151,4 +159,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-django_heroku.settings(locals())
+# django_heroku.settings(locals())

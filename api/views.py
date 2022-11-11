@@ -52,23 +52,27 @@ def userCreate(request):
         # print("here")
         # print(uniqueEmailStatus)
         if uniqueUsernameStatus == True and uniqueEmailStatus == True:
+            try:
+                print("i am here")
+                if serializer.is_valid():
+                    print("i am here1")
+                    serializer.save()
+                    print("i am here2")
+                    user = User.objects.all().last()
+                    serializer = UserCreatedSerializer(user)
 
-            if serializer.is_valid():
-                serializer.save()
-
-                user = User.objects.all().last()
-                serializer = UserCreatedSerializer(user)
-
-                response = {
-                    "Status": "200",
-                    "data": [
-                       serializer.data
-                    ]
-                }
-            else:
-                response = {
-                    "Error: User Not Created : Check Input"
-                }
+                    response = {
+                        "Status": "200",
+                        "data": [
+                            serializer.data
+                        ]
+                    }
+                else:
+                    response = {
+                        "Error: User Not Created : Check Input"
+                    }
+            except Exception as e:
+                response = {"Something went wrong": e}
         elif uniqueUsernameStatus == False and uniqueEmailStatus == True:
             response = {
                 "Error: Username Already Exists"
@@ -89,8 +93,6 @@ def userCreate(request):
         }
 
     return Response(response)
-
-
 
 
 @api_view(['GET'])
@@ -125,7 +127,7 @@ def deposit(request):
         payload = jwt.decode(token, 'secret', algorithms=['HS256'])
 
         user = User.objects.get(id=payload["id"])
-        if(float(request.data['amount'])>0):
+        if (float(request.data['amount']) > 0):
             current_balance = user.balance
             new_balance = current_balance + float(request.data['amount'])
             user.balance = new_balance
@@ -136,22 +138,22 @@ def deposit(request):
                 "message": "Deposit Successful"
             }
         else:
-             response = {
-                 
+            response = {
+
                 "status": 400,
                 "message": "Invalid Amount "
             }
-        
+
     except KeyError:
-          response ={
+        response = {
             "status": 400,
-            "message" : "Missing Amount"
-          }
+            "message": "Missing Amount"
+        }
     except ValueError:
-         response ={
+        response = {
             "status": 400,
-            "message" : "Invalid Amount"
-          }
+            "message": "Invalid Amount"
+        }
 
     except jwt.ExpiredSignatureError:
         raise AuthenticationFailed('Unauthorized')
@@ -165,41 +167,41 @@ def withdrawal(request):
     token = request.COOKIES.get('jwt')
     if not token:
         raise AuthenticationFailed('Unauthenticated')
-    
+
     try:
-        
+
         payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-      
+
         user = User.objects.get(id=payload["id"])
-        current_balance=user.balance
-        if(current_balance >= float(request.data['amount'])):
-            new_balance=current_balance -  float(request.data['amount'])
-            user.balance=new_balance
-        
+        current_balance = user.balance
+        if (current_balance >= float(request.data['amount'])):
+            new_balance = current_balance - float(request.data['amount'])
+            user.balance = new_balance
+
             user.save()
-            response={
+            response = {
                 "status": "200",
-                "message" : "Withdrawal Successful"
-        }
-        else:
-            response={
-                "status": "400",
-                "message" : "Insufficient Funds"
+                "message": "Withdrawal Successful"
             }
-    
+        else:
+            response = {
+                "status": "400",
+                "message": "Insufficient Funds"
+            }
+
     except KeyError:
-          response ={
+        response = {
             "status": "400",
-            "message" : "Missing Amount"
-          }
+            "message": "Missing Amount"
+        }
     except ValueError:
-         response ={
+        response = {
             "status": "400",
-            "message" : "Invalid Amount"
-          }
+            "message": "Invalid Amount"
+        }
 
     except jwt.ExpiredSignatureError:
         raise AuthenticationFailed('Unauthorized')
-    
+
     # users = User.objects.get(id=pk)
     return Response(response)
