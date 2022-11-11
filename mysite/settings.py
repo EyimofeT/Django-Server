@@ -93,11 +93,19 @@ DATABASES = {
     #     'HOST': os.environ["PGHOST"],
     #     'PORT': os.environ["PGPORT"],
     # }
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-       
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD':'BTU6iPpRHtmdiZNhUYw1',
+        'HOST': 'containers-us-west-116.railway.app',
+        'PORT':'5956',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+       
+    # }
 }
 
 AUTH_USER_MODEL = 'api.User'
